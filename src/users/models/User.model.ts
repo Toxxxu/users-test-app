@@ -9,7 +9,7 @@ export class User {
   password: string;
 
   @Prop()
-  token: string;
+  access_token: string;
 
   @Prop({ type: [{ type: 'ObjectId', ref: 'Test' }] })
   assignedTests: string[];

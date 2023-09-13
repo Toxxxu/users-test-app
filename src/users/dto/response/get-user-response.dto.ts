@@ -1,7 +1,7 @@
 export interface GetUserResponseDto {
   _id: string;
   username: string;
-  token: string;
+  access_token: string;
   assignedTests: string[];
   completedTests: string[];
 }
