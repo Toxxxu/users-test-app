@@ -10,6 +10,12 @@ export class User {
 
   @Prop()
   token: string;
+
+  @Prop({ type: [{ type: 'ObjectId', ref: 'Test' }] })
+  assignedTests: string[];
+
+  @Prop({ type: [{ type: 'ObjectId', ref: 'Test' }] })
+  completedTests: string[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
