@@ -9,7 +9,7 @@ export class CreateUserRequestDto {
 
   @IsNotEmpty()
   @IsString()
-  @MinLength(3)
+  @MinLength(8)
   @MaxLength(24)
   password: string;
 }
