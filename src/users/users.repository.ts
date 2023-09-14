@@ -28,12 +28,8 @@ export class UsersRepository {
     userId: string,
     newData: Partial<User>,
   ): Promise<User> {
-    return this.user.findByIdAndUpdate(
-      userId,
-      { $set: { assignedTests: newData.assignedTests } },
-      {
-        new: true,
-      },
-    );
+    return this.user.findByIdAndUpdate(userId, newData, {
+      new: true,
+    });
   }
 }

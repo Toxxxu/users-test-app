@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 
 import { TestsService } from './tests.service';
 import { CreateTestRequestDto } from './dto/request/create-test-request.dto';
-import { GetTestResponseDto } from './dto/response/get-test-response.dto';
+import { GetTestResponseDto } from './dto/response/viewer/get-test-response.dto';
 
 @Controller('tests')
 export class TestsController {

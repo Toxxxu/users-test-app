@@ -20,23 +20,16 @@ export class TestsRepository {
     return test.save();
   }
 
+  async findOneById(testId: string): Promise<Test> {
+    return this.test.findById(testId);
+  }
+
   async findOneAndEditById(
     testId: string,
     newData: Partial<Test>,
   ): Promise<Test> {
-    const updatedTest = await this.test.findByIdAndUpdate(testId, newData, {
+    return this.test.findByIdAndUpdate(testId, newData, {
       new: true,
     });
-    return updatedTest;
-  }
-
-  async findOneAndEditByTitle(
-    title: string,
-    newData: Partial<Test>,
-  ): Promise<Test> {
-    const updatedTest = await this.test.findOneAndUpdate({ title }, newData, {
-      new: true,
-    });
-    return updatedTest;
   }
 }
