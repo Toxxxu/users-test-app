@@ -11,6 +11,7 @@ import { UsersModule } from 'src/users/users.module';
     forwardRef(() => UsersModule),
     JwtModule.registerAsync({
       useFactory: (configService: ConfigService) => ({
+        global: true,
         secret: configService.get<string>('SECRET_KEY'),
         signOptions: {
           expiresIn: `${configService.get('EXPIRES_IN')}s`,
