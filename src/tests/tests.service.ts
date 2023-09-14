@@ -9,6 +9,11 @@ import { Test } from './models/Test.model';
 export class TestsService {
   constructor(private readonly testsRepository: TestsRepository) {}
 
+  async findAllTests(): Promise<GetTestResponseDto[]> {
+    const tests = await this.testsRepository.findAll();
+    return tests.map((test) => this.buildResponse(test));
+  }
+
   async createTest(
     createTestRequest: CreateTestRequestDto,
   ): Promise<GetTestResponseDto> {

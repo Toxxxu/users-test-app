@@ -11,6 +11,10 @@ export class TestsRepository {
     private readonly test: Model<Test>,
   ) {}
 
+  async findAll(): Promise<Test[]> {
+    return this.test.find();
+  }
+
   async insertOne(data: Partial<Test>): Promise<Test> {
     const test = new this.test(data);
     return test.save();
