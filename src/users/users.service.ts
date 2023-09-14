@@ -1,8 +1,10 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   NotFoundException,
   UnauthorizedException,
+  forwardRef,
 } from '@nestjs/common';
 import { hash, compare } from 'bcrypt';
 
@@ -10,10 +12,15 @@ import { UsersRepository } from './users.repository';
 import { CreateUserRequestDto } from './dto/request/create-user-request.dto';
 import { GetUserResponseDto } from './dto/response/get-user-response.dto';
 import { User } from './models/User.model';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly usersRepository: UsersRepository) {}
+  constructor(
+    private readonly usersRepository: UsersRepository,
+    @Inject(forwardRef(() => AuthService))
+    private readonly authService: AuthService,
+  ) {}
 
   async createUser(
     createUserRequest: CreateUserRequestDto,
