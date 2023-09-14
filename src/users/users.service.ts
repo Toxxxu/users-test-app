@@ -73,7 +73,6 @@ export class UsersService {
     return {
       _id: user._id.toHexString(),
       username: user.username,
-      access_token: user.access_token,
       assignedTests: user.assignedTests,
       completedTests: user.completedTests,
     };

@@ -9,9 +9,6 @@ export class User extends Document {
   @Prop({ required: true })
   password: string;
 
-  @Prop()
-  access_token: string;
-
   @Prop({ type: [{ type: 'ObjectId', ref: 'Test' }] })
   assignedTests: string[];
 
