@@ -10,10 +10,14 @@ import { UsersRepository } from './users.repository';
 import { CreateUserRequestDto } from './dto/request/create-user-request.dto';
 import { GetUserResponseDto } from './dto/response/get-user-response.dto';
 import { User } from './models/User.model';
+import { TestsService } from 'src/tests/tests.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly usersRepository: UsersRepository) {}
+  constructor(
+    private readonly usersRepository: UsersRepository,
+    private readonly testsService: TestsService,
+  ) {}
 
   async createUser(
     createUserRequest: CreateUserRequestDto,
@@ -60,6 +64,33 @@ export class UsersService {
       throw new NotFoundException(`User not found by _id: '${userId}'.`);
     }
     return this.buildResponse(user);
+  }
+
+  async assignTestsToUser(userId: string): Promise<void> {
+    const user = await this.usersRepository.findOneById(userId);
+    if (!user) {
+      throw new NotFoundException(`User not found by _id: '${userId}'.`);
+    }
+
+    const tests = await this.testsService.findAllTests();
+
+    const completedTests = user.completedTests.map((test) => test.toString());
+    const assignedTestsOld = user.assignedTests.map((test) => test.toString());
+
+    const assignedTests = tests
+      .filter(
+        (test) =>
+          !completedTests.includes(test._id.toString()) ||
+          !assignedTestsOld.includes(test._id.toString()),
+      )
+      .map((test) => test._id.toString());
+
+    const newUserData = {
+      ...user,
+      assignedTests,
+    };
+
+    await this.usersRepository.findOneAndEditById(userId, newUserData);
   }
 
   private buildResponse(user: User): GetUserResponseDto {

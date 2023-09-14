@@ -12,5 +12,6 @@ import { TestsRepository } from './tests.repository';
   ],
   controllers: [TestsController],
   providers: [TestsService, TestsRepository],
+  exports: [TestsService],
 })
 export class TestsModule {}

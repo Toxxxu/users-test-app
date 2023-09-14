@@ -26,6 +26,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   async getProfile(@Request() req) {
+    await this.usersService.assignTestsToUser(req.user._id);
     return req.user;
   }
 }

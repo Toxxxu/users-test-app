@@ -23,4 +23,17 @@ export class UsersRepository {
   async findOneById(userId: string): Promise<User> {
     return this.user.findById(userId);
   }
+
+  async findOneAndEditById(
+    userId: string,
+    newData: Partial<User>,
+  ): Promise<User> {
+    return this.user.findByIdAndUpdate(
+      userId,
+      { $set: { assignedTests: newData.assignedTests } },
+      {
+        new: true,
+      },
+    );
+  }
 }

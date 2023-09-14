@@ -20,6 +20,8 @@ export class AuthService {
 
     const user = await this.usersService.validateUser(username, password);
 
+    await this.usersService.assignTestsToUser(user._id);
+
     const accessToken = await this.generateAccessToken(user);
 
     return {
