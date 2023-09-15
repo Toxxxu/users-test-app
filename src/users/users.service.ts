@@ -67,10 +67,7 @@ export class UsersService {
   }
 
   async assignTestsToUser(userId: string): Promise<void> {
-    const user = await this.usersRepository.findOneById(userId);
-    if (!user) {
-      throw new NotFoundException(`User not found by _id: '${userId}'.`);
-    }
+    const user = await this.getUserById(userId);
 
     const tests = await this.testsService.findAllTests();
 

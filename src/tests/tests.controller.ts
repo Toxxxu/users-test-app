@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 
 import { TestsService } from './tests.service';
 import { CreateTestRequestDto } from './dto/request/create-test-request.dto';
 import { GetTestResponseDto } from './dto/response/viewer/get-test-response.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('tests')
 export class TestsController {
@@ -13,6 +14,13 @@ export class TestsController {
     return this.testsService.findAllTests();
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get(':id')
+  async findTest(@Param('id') testId: string): Promise<GetTestResponseDto> {
+    return this.testsService.findTest(testId);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Post()
   async createTest(
     @Body() createTestRequest: CreateTestRequestDto,
