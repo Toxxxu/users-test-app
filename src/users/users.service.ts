@@ -93,7 +93,7 @@ export class UsersService {
       .filter(
         (test) =>
           !completedTests.includes(test._id.toString()) &&
-          !assignedTestsOld.includes(test._id.toString()), // Check if not already assigned
+          !assignedTestsOld.includes(test._id.toString()),
       )
       .map((test) => test._id.toString());
 
