@@ -86,25 +86,23 @@ export class UsersService {
     const user = await this.getUserById(userId);
 
     const tests = await this.testsService.findAllTests();
+    const completedTests = user.completedTests.map((test) => test.toString());
+    const assignedTestsOld = user.assignedTests.map((test) => test.toString());
 
-    const testsToAssign = tests.filter((test) => {
-      const testId = test._id.toString();
-      return (
-        !user.completedTests.includes(testId) &&
-        !user.assignedTests.includes(testId)
-      );
-    });
+    const assignedTests = tests
+      .filter(
+        (test) =>
+          !completedTests.includes(test._id.toString()) &&
+          !assignedTestsOld.includes(test._id.toString()), // Check if not already assigned
+      )
+      .map((test) => test._id.toString());
 
-    user.assignedTests.push(
-      ...testsToAssign.map((test) => test._id.toString()),
-    );
-
-    const newData = {
+    const newUserData = {
       ...user,
-      assignedTests: user.assignedTests,
+      assignedTests,
     };
 
-    await this.usersRepository.findOneAndEditById(userId, newData);
+    await this.usersRepository.findOneAndEditById(userId, newUserData);
   }
 
   async completeTest(userId: string, testId: string): Promise<void> {
