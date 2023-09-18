@@ -87,14 +87,9 @@ export class UsersService {
 
     const tests = await this.testsService.findAllTests();
     const completedTests = user.completedTests.map((test) => test.toString());
-    const assignedTestsOld = user.assignedTests.map((test) => test.toString());
 
     const assignedTests = tests
-      .filter(
-        (test) =>
-          !completedTests.includes(test._id.toString()) &&
-          !assignedTestsOld.includes(test._id.toString()),
-      )
+      .filter((test) => !completedTests.includes(test._id.toString()))
       .map((test) => test._id.toString());
 
     const newUserData = {
@@ -148,6 +143,7 @@ export class UsersService {
     await this.testsService.addTestCompletion({
       userId,
       testId,
+      title: test.title,
       mark,
       questions,
     });

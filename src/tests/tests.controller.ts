@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 
 import { TestsService } from './tests.service';
 import { CreateTestRequestDto } from './dto/request/create-test-request.dto';
@@ -12,6 +20,18 @@ export class TestsController {
   @Get()
   async findAllTests(): Promise<GetTestResponseDto[]> {
     return this.testsService.findAllTests();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('assignedtests')
+  async findAssignedTestsUser(@Request() req): Promise<GetTestResponseDto[]> {
+    return this.testsService.getAssignedTests(req.user._id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('completedtests')
+  async findCompletedTestsUser(@Request() req): Promise<GetTestResponseDto[]> {
+    return this.testsService.getCompletedTests(req.user._id);
   }
 
   @UseGuards(JwtAuthGuard)

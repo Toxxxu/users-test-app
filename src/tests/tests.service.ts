@@ -36,6 +36,24 @@ export class TestsService {
     return this.buildResponseClient(test);
   }
 
+  async getAssignedTests(userId: string): Promise<GetTestResponseDto[]> {
+    const tests = await this.testsRepository.findAll();
+    const userAssignedTests = await this.usersSerivce.getUserById(userId);
+    const assignedTests = tests.filter((test) =>
+      userAssignedTests.assignedTests.includes(test._id),
+    );
+    return assignedTests.map((test) => this.buildResponseViewer(test));
+  }
+
+  async getCompletedTests(userId: string): Promise<GetTestResponseDto[]> {
+    const tests = await this.testsRepository.findAll();
+    const userCompletedTests = await this.usersSerivce.getUserById(userId);
+    const completedTests = tests.filter((test) =>
+      userCompletedTests.completedTests.includes(test._id),
+    );
+    return completedTests.map((test) => this.buildResponseViewer(test));
+  }
+
   async createTest(
     createTestRequest: CreateTestRequestDto,
   ): Promise<GetTestResponseDto> {
@@ -127,10 +145,14 @@ export class TestsService {
     };
   }
 
-  private buildReceiveTest(test: TestCompletion): ReceiveTestDto {
+  private async buildReceiveTest(
+    test: TestCompletion,
+  ): Promise<ReceiveTestDto> {
+    const testById = await this.findTest(test.testId);
     return {
       userId: test.userId,
       testId: test.testId,
+      title: testById.title,
       mark: test.mark,
       questions: test.questions,
     };
